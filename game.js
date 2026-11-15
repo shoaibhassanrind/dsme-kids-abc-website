@@ -44,13 +44,21 @@
   let progress = loadProgress();
   let soundOn = localStorage.getItem(SOUND_KEY) !== "0";
   let musicOn = localStorage.getItem(MUSIC_KEY) !== "0";
+  const MUSIC_RATE = 0.7;
+  const MUSIC_VOL = 0.38;
   const song = new Audio("audio/abc_song_full.wav");
   song.loop = true;
-  song.volume = 0.32;
+  song.volume = MUSIC_VOL;
+  song.playbackRate = MUSIC_RATE;
+  song.preservesPitch = true;
   const sfxCorrect = new Audio("audio/sfx_correct.wav");
   const sfxWrong = new Audio("audio/sfx_try_again.wav");
   const sfxFanfare = new Audio("audio/sfx_fanfare.wav");
+  sfxCorrect.volume = 0.22;
+  sfxWrong.volume = 0.18;
+  sfxFanfare.volume = 0.28;
   let speakToken = 0;
+  let female = null;
   let screen = progress.letterIndex >= LETTERS.length ? "done" : "welcome";
   let question = null;
   let phase = "answering";
@@ -122,28 +130,67 @@
     return letter.upper + ". " + letter.upper + " for " + letter.word + ".";
   }
 
+  function tuneMusic() {
+    song.playbackRate = MUSIC_RATE;
+    song.preservesPitch = true;
+    song.volume = MUSIC_VOL;
+  }
+
   function resumeMusic() {
     if (!musicOn) return;
+    tuneMusic();
     song.play().catch(function () {});
   }
 
   function pauseMusic() { song.pause(); }
 
+  function femaleVoice() {
+    if (!window.speechSynthesis) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return female;
+    const english = voices.filter(function (v) { return /^en/i.test(v.lang); });
+    const pool = english.length ? english : voices;
+    const prefer = /zira|samantha|victoria|karen|moira|fiona|hazel|susan|aria|jenny|libby|sonia|natasha|female/i;
+    const male = /male|david|mark|guy|daniel|ravi|george|alex/i;
+    female = pool.find(function (v) { return prefer.test(v.name) && !male.test(v.name); })
+      || pool.find(function (v) { return !male.test(v.name); })
+      || null;
+    return female;
+  }
+
+  if (window.speechSynthesis) {
+    window.speechSynthesis.addEventListener("voiceschanged", function () { femaleVoice(); });
+    femaleVoice();
+  }
+
+  /** Letter voice sits inside the slow music. The song keeps playing. */
   function speak(text) {
     if (!soundOn || !window.speechSynthesis) return;
     const token = ++speakToken;
-    pauseMusic();
+    const ducked = musicOn && !song.paused;
+    if (ducked) song.volume = 0.16;
     window.speechSynthesis.cancel();
     window.setTimeout(function () {
       if (token !== speakToken) return;
       const utter = new SpeechSynthesisUtterance(text);
+      const voice = femaleVoice();
+      if (voice) utter.voice = voice;
       utter.lang = "en-US";
-      utter.rate = 0.85;
-      utter.pitch = 1.1;
-      utter.onend = function () { if (token === speakToken) resumeMusic(); };
-      utter.onerror = function () { if (token === speakToken) resumeMusic(); };
+      utter.rate = 0.9;
+      utter.pitch = 1.18;
+      function restore() {
+        if (token !== speakToken) return;
+        if (musicOn && !song.paused) song.volume = MUSIC_VOL;
+      }
+      utter.onend = restore;
+      utter.onerror = restore;
       window.speechSynthesis.speak(utter);
     }, 60);
+  }
+
+  function badgeName(stars) {
+    if (!stars) return "";
+    return stars + " Star Badge";
   }
 
   function stopSpeech() {
@@ -165,7 +212,7 @@
       progress = emptyProgress();
       render();
       playClip(sfxFanfare);
-      speak("You are an ABC Superstar!");
+      if (finished.stars > 0) speak("You earned the " + badgeName(finished.stars) + "!");
       return;
     }
     screen = "play";
@@ -195,10 +242,16 @@
     const saved = Object.assign({}, progress, { letterIndex: index + 1 });
     localStorage.setItem(STORE_KEY, JSON.stringify(saved));
     phase = "correct";
-    feedback = { kind: "praise", text: PRAISE[Math.floor(Math.random() * PRAISE.length)], star: starAwarded };
+    const badge = badgeName(progress.stars);
+    feedback = {
+      kind: "praise",
+      text: PRAISE[Math.floor(Math.random() * PRAISE.length)],
+      star: starAwarded,
+      badge: starAwarded ? badge : "",
+    };
     wiggle = -1;
     playCorrect();
-    speak(phrase(LETTERS[index]));
+    if (starAwarded) speak("Great job! " + badge + ".");
     render();
     advanceTimer = setTimeout(function () {
       progress = Object.assign({}, progress, { letterIndex: index + 1 });
@@ -269,7 +322,7 @@
   function toggleMusic() {
     musicOn = !musicOn;
     localStorage.setItem(MUSIC_KEY, musicOn ? "1" : "0");
-    if (musicOn && soundOn) resumeMusic();
+    if (musicOn) resumeMusic();
     else pauseMusic();
     render();
   }
@@ -325,7 +378,9 @@
 
     let message = "";
     if (feedback && feedback.kind === "praise") {
-      message = '<p class="msg msg-good">' + esc(feedback.text) + (feedback.star ? " +1 star" : "") + '</p>';
+      message = '<p class="msg msg-good">' + esc(feedback.text) +
+        (feedback.star ? " +1 star" : "") +
+        (feedback.badge ? " · " + esc(feedback.badge) : "") + '</p>';
     } else if (feedback && feedback.kind === "again") {
       message = '<p class="msg msg-again">Try again!</p>';
     }
@@ -337,7 +392,9 @@
       '<section class="play-board">' +
         '<div class="play-top">' +
           '<button type="button" class="icon-btn" data-act="home" aria-label="Home">Home</button>' +
-          '<div class="play-stats"><span>★ ' + progress.stars + '</span><span>Streak ' + progress.streak + '</span></div>' +
+          '<div class="play-stats"><span>★ ' + progress.stars + '</span>' +
+            (progress.stars ? '<span class="badge-chip">' + esc(badgeName(progress.stars)) + '</span>' : '') +
+            '<span>Streak ' + progress.streak + '</span></div>' +
           '<button type="button" class="icon-btn" data-act="music">' + (musicOn ? "Music on" : "Music off") + '</button>' +
           '<button type="button" class="icon-btn" data-act="sound">' + (soundOn ? "Phonics on" : "Phonics off") + '</button>' +
         '</div>' +
@@ -361,11 +418,20 @@
   }
 
   function renderDone() {
+    const stars = finished ? finished.stars : 0;
+    const badge = badgeName(stars);
+    const full = stars === 26;
     return (
       '<section class="play-welcome">' +
-        '<p class="trophy" aria-hidden="true">🏆</p>' +
-        '<h1>You are an ABC Superstar!</h1>' +
-        '<p class="lead">' + (finished ? finished.stars : 0) + ' of 26 stars · Best streak ' + (finished ? finished.bestStreak : 0) + '</p>' +
+        (badge
+          ? '<div class="badge-award' + (full ? " badge-full" : "") + '">' +
+              '<span class="badge-count">★ ' + stars + '</span>' +
+              '<strong>' + esc(badge) + '</strong>' +
+              '<p>' + (full ? "Every letter was correct." : stars + " of 26 stars") + '</p>' +
+            '</div>'
+          : '<p class="trophy" aria-hidden="true">★</p><p class="lead">No badge yet. Each right answer earns one star.</p>') +
+        '<h1>' + (full ? "You are an ABC Superstar!" : "A to Z complete") + '</h1>' +
+        '<p class="lead">Best streak ' + (finished ? finished.bestStreak : 0) + '</p>' +
         '<div class="play-actions">' +
           '<button type="button" class="btn btn-primary" data-act="new">Play again</button>' +
           '<button type="button" class="btn btn-ghost" data-act="home">Home</button>' +
