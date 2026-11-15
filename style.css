@@ -72,9 +72,10 @@ p { margin: 0 0 1em; }
 .school-row .eyebrow {
   margin: 0; flex: 0 1 auto; font-family: var(--display); font-weight: 800;
   font-size: clamp(1.25rem, 2.6vw, 1.9rem); line-height: 1.2; letter-spacing: .03em; max-width: 13em;
-  color: var(--brand); /* fallback */
-  background: linear-gradient(92deg, var(--brand-deep) 0%, var(--brand) 55%, var(--brand-glow) 100%);
+  color: #e25b12;
+  background: linear-gradient(100deg, #c2410c 0%, #f07d1a 38%, #ffb703 72%, #ff7a1a 100%);
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(194, 65, 12, .18));
 }
 .school-row .eyebrow::after { content: "DSME, Johi"; display: block; font-family: var(--body); font-weight: 700; font-size: .55em; letter-spacing: .1em; color: var(--ink-soft); -webkit-text-fill-color: var(--ink-soft); margin-top: 4px; }
 .hero-logo { width: clamp(72px, 8vw, 96px); height: auto; flex: none; border-radius: 10px; background: #fff; box-shadow: 0 2px 10px rgba(43,45,66,.08); }
@@ -202,7 +203,10 @@ p { margin: 0 0 1em; }
   font-family: var(--display); font-weight: 800;
   font-size: clamp(1.35rem, 2.8vw, 1.85rem);
   line-height: 1.15; letter-spacing: .01em; text-transform: none;
-  color: var(--primary);
+  color: #e25b12;
+  background: linear-gradient(100deg, #c2410c 0%, #f07d1a 38%, #ffb703 72%, #ff7a1a 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(194, 65, 12, .18));
 }
 .play-brand strong, .play-welcome h1 {
   display: block; margin: 2px 0 0;
@@ -227,10 +231,11 @@ a.icon-btn { text-decoration: none; }
   box-shadow: 0 8px 24px rgba(43,45,66,.08);
 }
 .learn-card .btn { min-height: 36px; padding: 0 14px; font-size: .95rem; }
-.learn-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
-.big-letter { margin: 0; font-size: 3rem; line-height: .9; }
-.big-letter em { font-style: normal; color: var(--primary); margin-left: 4px; }
-.learn-card img { width: 84px; height: 84px; object-fit: cover; border-radius: 16px; }
+.learn-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.big-letter { margin: 0; font-size: clamp(4.6rem, 22vw, 6.2rem); line-height: .8; font-weight: 800; }
+.big-letter b { font-weight: 800; color: var(--ink); }
+.big-letter em { font-style: normal; font-weight: 800; color: var(--primary); font-size: 1em; margin-left: 2px; }
+.learn-card img { width: min(108px, 28vw); height: min(108px, 28vw); object-fit: cover; border-radius: 16px; }
 .word { margin: 2px 0 0; font-size: 1.25rem; }
 .phonic { margin: 0 0 4px; color: var(--ink-soft); }
 .prompt { font-family: var(--display); font-weight: 800; font-size: 1.15rem; margin: 6px 0; }
