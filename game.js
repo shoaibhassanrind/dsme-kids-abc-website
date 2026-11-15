@@ -30,7 +30,7 @@
     ["Y", "Yo-yo", "yo-yo.svg"],
     ["Z", "Zebra", "zebra.svg"],
   ].map(function (row) {
-    return { upper: row[0], lower: row[0].toLowerCase(), word: row[1], file: row[2] };
+    return { upper: row[0], lower: row[0].toLowerCase(), word: row[1], file: row[2].replace(".svg", "-3d.jpg") };
   });
 
   const PRAISE = ["Great job!", "Amazing!", "Well done!", "Super!", "You found it!"];
@@ -45,7 +45,7 @@
   let soundOn = localStorage.getItem(SOUND_KEY) !== "0";
   let musicOn = localStorage.getItem(MUSIC_KEY) !== "0";
   const MUSIC_RATE = 0.7;
-  const MUSIC_VOL = 0.38;
+  const MUSIC_VOL = 0.55;
   const song = new Audio("audio/abc_song_full.wav");
   song.loop = true;
   song.volume = MUSIC_VOL;
@@ -345,7 +345,7 @@
         '<img class="play-logo" src="img/dsme_logo.webp" alt="Dawn School of Modern Education logo" width="120" height="98">' +
         '<p class="eyebrow school-name">Dawn School of Modern Education</p>' +
         '<h1>DSME Kids ABC Adventure</h1>' +
-        '<p class="lead">Find the same picture for every letter, A to Z. Earn a star each time.</p>' +
+        '<p class="lead">Find the same letter, A to Z. A slow song plays, and a voice says each letter.</p>' +
         '<div class="play-actions">' +
           (mid
             ? '<button type="button" class="btn btn-primary" data-act="continue">Continue (Letter ' + letter.upper + ')</button>' +
@@ -370,8 +370,8 @@
       const wiggleClass = wiggle === position ? " wiggle" : "";
       const locked = phase !== "answering" ? " disabled" : "";
       return (
-        '<button type="button" class="choice ' + state + wiggleClass + '" data-act="choice" data-pos="' + position + '" aria-label="' + esc(choice.word) + '"' + locked + '>' +
-          picture(choice, choice.word + " picture") +
+        '<button type="button" class="choice letter-choice ' + state + wiggleClass + '" data-act="choice" data-pos="' + position + '" aria-label="' + choice.upper + '"' + locked + '>' +
+          '<b>' + choice.upper + '</b><em>' + choice.lower + '</em>' +
         '</button>'
       );
     }).join("");
@@ -409,7 +409,7 @@
           '<p class="phonic">' + letter.upper + '. ' + letter.upper + ' for ' + esc(letter.word) + '.</p>' +
           '<button type="button" class="btn btn-ghost" data-act="hear">Hear phonics</button>' +
         '</article>' +
-        '<p class="prompt">Find the same picture!</p>' +
+        '<p class="prompt">Find the letter!</p>' +
         '<div class="choices">' + cards + '</div>' +
         message +
         '<div class="skip-row"><button type="button" class="skip" data-act="skip"' + (phase !== "answering" ? " disabled" : "") + '>Skip →</button></div>' +
@@ -469,5 +469,6 @@
     }
   });
 
+  document.addEventListener("pointerdown", function () { resumeMusic(); });
   render();
 })();

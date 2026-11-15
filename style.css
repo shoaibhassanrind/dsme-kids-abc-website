@@ -68,7 +68,7 @@ p { margin: 0 0 1em; }
 .top-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
 .brand-logo { height: 42px; width: auto; border-radius: 6px; background: #fff; }
-.school-row { display: flex; align-items: center; justify-content: flex-start; gap: clamp(12px, 1.6vw, 20px); margin-bottom: 20px; }
+.school-row { display: flex; align-items: center; justify-content: flex-start; gap: clamp(12px, 1.6vw, 20px); margin-bottom: 10px; }
 .school-row .eyebrow {
   margin: 0; flex: 0 1 auto; font-family: var(--display); font-weight: 800;
   font-size: clamp(1.25rem, 2.6vw, 1.9rem); line-height: 1.2; letter-spacing: .03em; max-width: 13em;
@@ -88,53 +88,18 @@ p { margin: 0 0 1em; }
 .nav a { text-decoration: none; color: var(--ink-soft); font-weight: 600; }
 .nav a:hover, .nav a:focus-visible { color: var(--primary); }
 
-/* Above-the-fold student banner */
-.fold-banner {
-  position: relative;
-  max-width: 1080px;
-  margin: 18px auto 0;
-  padding-left: var(--gutter-l);
-  padding-right: var(--gutter-r);
-}
-.fold-banner img {
-  display: block;
-  width: 100%;
-  height: clamp(190px, 34vw, 340px);
-  object-fit: cover;
-  object-position: center 22%;
-  border-radius: 28px;
-  box-shadow:
-    0 22px 40px rgba(22, 62, 114, .28),
-    0 1px 0 rgba(255, 255, 255, .7) inset;
-  transform: perspective(1100px) rotateX(3deg);
-  transform-origin: center bottom;
-}
-.fold-banner p {
-  position: absolute;
-  left: calc(var(--gutter-l) + 18px);
-  bottom: 16px;
-  margin: 0;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(22, 40, 72, .55);
-  color: #fff;
-  font-family: var(--display);
-  font-weight: 800;
-  letter-spacing: .04em;
-  backdrop-filter: blur(6px);
-}
-
-/* Hero */
-.hero { padding-block: 36px 40px; }
+/* Hero sits in the fold, right under the header */
+.hero { padding-block: 16px 28px; }
 .hero-inner { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
 .eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
 .lead { font-size: 1.2rem; color: var(--ink-soft); max-width: 36em; }
-.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px; border-radius: 999px; font-family: var(--display); font-weight: 700; font-size: 1.1rem; text-decoration: none; transition: transform .12s ease; }
 .btn:active { transform: scale(.96); }
 .btn:focus-visible { outline: 3px solid var(--sunny); outline-offset: 2px; }
 .btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: 0 6px 18px rgba(31,122,224,.25); }
 .btn-ghost { background: var(--surface); color: var(--ink); border: 2px solid var(--border); }
+.btn-abc { background: var(--sky); color: #fff; }
 .btn-play { background: var(--purple); color: #fff; }
 .btn-shape { background: var(--green); color: #fff; }
 .play-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; max-width: 760px; margin: 0 auto; padding: 16px var(--gutter-r) 0 var(--gutter-l); }
@@ -221,9 +186,41 @@ p { margin: 0 0 1em; }
 .doc .updated { color: var(--ink-soft); margin-bottom: 2em; }
 .doc h2 { font-size: 1.4rem; margin-top: 1.6em; }
 
+#game { max-width: 760px; margin: 0 auto; padding: 8px var(--gutter-r) 48px var(--gutter-l); }
+.play-welcome, #game .play-board { text-align: center; }
+.play-welcome .play-logo { width: 96px; height: auto; border-radius: 10px; background: #fff; }
+.play-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 18px; }
+.play-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.play-stats { display: flex; gap: 10px; align-items: center; font-family: var(--display); font-weight: 800; }
+.badge-chip { background: var(--sunny); color: var(--on-sunny); border-radius: 999px; padding: 2px 10px; font-size: .85rem; }
+.icon-btn, .skip { border: 0; background: transparent; color: var(--primary); font-family: var(--display); font-weight: 800; cursor: pointer; }
+.track { height: 8px; background: var(--track); border-radius: 99px; margin: 12px 0; overflow: hidden; }
+.track span { display: block; height: 100%; background: var(--primary); }
+.learn-card { background: var(--surface); border-radius: 28px; padding: 16px; box-shadow: 0 8px 24px rgba(43,45,66,.08); }
+.learn-row { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.big-letter { margin: 0; font-size: 4.2rem; line-height: .9; }
+.big-letter em { font-style: normal; color: var(--primary); margin-left: 4px; }
+.learn-card img { width: 120px; height: 120px; object-fit: cover; border-radius: 20px; }
+.word { margin: 8px 0 0; }
+.phonic { margin: 4px 0 8px; color: var(--ink-soft); }
+.prompt { font-family: var(--display); font-weight: 800; font-size: 1.35rem; }
+.choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.letter-choice { min-height: 110px; border-radius: 22px; border: 3px solid var(--border); background: var(--surface); cursor: pointer; font-family: var(--display); }
+.letter-choice b { display: block; font-size: 2.4rem; }
+.letter-choice em { font-style: normal; color: var(--primary); font-size: 1.3rem; }
+.letter-choice.correct { border-color: var(--green); background: var(--green-bg); }
+.letter-choice.wrong { border-color: #E07A5F; background: #FDECEA; }
+.letter-choice.hint { border-color: var(--sunny); box-shadow: 0 0 0 4px rgba(255,201,60,.45); }
+.msg { font-family: var(--display); font-weight: 800; }
+.msg-good { color: #1B7A52; }
+.msg-again { color: #9C3B28; }
+.badge-award { background: var(--sunny); color: var(--on-sunny); border-radius: 28px; padding: 18px; display: inline-block; }
+.wiggle { animation: wiggle .4s ease; }
+@keyframes wiggle { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
 @media (max-width: 820px) {
   .hero-inner, .song-inner { grid-template-columns: 1fr; }
   .grid, .grid-3 { grid-template-columns: 1fr; }
-  .hero { padding-block: 36px 24px; }
+  .hero { padding-block: 12px 20px; }
   .hero-art { margin-top: 16px; }
 }

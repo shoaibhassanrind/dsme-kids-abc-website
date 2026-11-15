@@ -13,15 +13,50 @@
   var starsEl = document.getElementById("stars");
   var song = new Audio("audio/abc_song_full.wav");
   song.loop = true;
-  song.volume = 0.38;
+  song.volume = 0.55;
   song.playbackRate = 0.7;
   song.preservesPitch = true;
+  var currentName = "";
+  var voiceReady = false;
+  function femaleVoice() {
+    if (!window.speechSynthesis) return null;
+    var voices = window.speechSynthesis.getVoices();
+    var english = voices.filter(function (v) { return /^en/i.test(v.lang); });
+    var pool = english.length ? english : voices;
+    var prefer = /zira|samantha|victoria|karen|moira|fiona|hazel|susan|aria|jenny|libby|sonia|natasha|female/i;
+    var male = /male|david|mark|guy|daniel|ravi|george/i;
+    return pool.filter(function (v) { return prefer.test(v.name) && !male.test(v.name); })[0]
+      || pool.filter(function (v) { return !male.test(v.name); })[0]
+      || null;
+  }
+  if (window.speechSynthesis) window.speechSynthesis.addEventListener("voiceschanged", femaleVoice);
+  function speak(text) {
+    if (!text || !window.speechSynthesis) return;
+    if (!song.paused) song.volume = 0.16;
+    window.speechSynthesis.cancel();
+    var utter = new SpeechSynthesisUtterance(text);
+    var voice = femaleVoice();
+    if (voice) utter.voice = voice;
+    utter.lang = "en-US";
+    utter.rate = 0.9;
+    utter.pitch = 1.15;
+    function restore() { if (!song.paused) song.volume = 0.55; }
+    utter.onend = restore;
+    utter.onerror = restore;
+    window.speechSynthesis.speak(utter);
+  }
   function startMusic() {
+    song.volume = 0.55;
     song.playbackRate = 0.7;
     song.play().catch(function () {});
   }
-  document.addEventListener("pointerdown", startMusic);
-  startMusic();
+  document.addEventListener("pointerdown", function () {
+    startMusic();
+    if (!voiceReady) {
+      voiceReady = true;
+      speak(currentName);
+    }
+  });
   var round = 0;
   var stars = 0;
   var wrong = 0;
@@ -49,6 +84,7 @@
   function render() {
     if (round >= items.length) { showDone(); return; }
     var target = items[round];
+    currentName = target[0];
     var others = shuffle(items.filter(function (it) { return it !== target; })).slice(0, 2);
     var choices = shuffle([target].concat(others));
     correctAt = choices.indexOf(target);
@@ -62,6 +98,7 @@
       '<div class="choice-row">' + choices.map(function (it, i) {
         return '<button type="button" data-i="' + i + '">' + pic(it[1], it[0]) + '</button>';
       }).join("") + '</div><p id="msg"></p>';
+    if (voiceReady) speak(currentName);
   }
 
   board.addEventListener("click", function (event) {
