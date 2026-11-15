@@ -8,10 +8,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="play-page">
+<div class="scene" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span><span class="orb o5"></span></div>
+<div class="play-brand">
+  <img src="img/dsme_logo.webp" alt="Dawn School of Modern Education logo" width="72" height="58">
+  <div>
+    <p>Dawn School of Modern Education</p>
+    <strong>Kids ABC Adventure</strong>
+  </div>
+</div>
 <div class="play-topbar">
   <a href="index.html">← Home</a>
 </div>
 <main id="game"></main>
+<audio id="dsme-song" src="audio/abc_song_full.wav" loop preload="auto" playsinline></audio>
+<script src="sound.js"></script>
 <script src="game.js"></script>
 </body>
 </html>

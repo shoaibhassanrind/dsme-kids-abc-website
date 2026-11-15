@@ -35,8 +35,8 @@
 
   const PRAISE = ["Great job!", "Amazing!", "Well done!", "Super!", "You found it!"];
   const STORE_KEY = "dsme-abc-progress-v1";
-  const SOUND_KEY = "dsme-abc-sound";
-  const MUSIC_KEY = "dsme-abc-music";
+  const SOUND_KEY = "dsme-abc-sound-v2";
+  const MUSIC_KEY = "dsme-abc-music-v2";
   const HINT_AFTER = 2;
   const ADVANCE_MS = 2500;
 
@@ -44,13 +44,6 @@
   let progress = loadProgress();
   let soundOn = localStorage.getItem(SOUND_KEY) !== "0";
   let musicOn = localStorage.getItem(MUSIC_KEY) !== "0";
-  const MUSIC_RATE = 0.7;
-  const MUSIC_VOL = 0.55;
-  const song = new Audio("audio/abc_song_full.wav");
-  song.loop = true;
-  song.volume = MUSIC_VOL;
-  song.playbackRate = MUSIC_RATE;
-  song.preservesPitch = true;
   const sfxCorrect = new Audio("audio/sfx_correct.wav");
   const sfxWrong = new Audio("audio/sfx_try_again.wav");
   const sfxFanfare = new Audio("audio/sfx_fanfare.wav");
@@ -130,19 +123,13 @@
     return letter.upper + ". " + letter.upper + " for " + letter.word + ".";
   }
 
-  function tuneMusic() {
-    song.playbackRate = MUSIC_RATE;
-    song.preservesPitch = true;
-    song.volume = MUSIC_VOL;
-  }
-
   function resumeMusic() {
-    if (!musicOn) return;
-    tuneMusic();
-    song.play().catch(function () {});
+    if (musicOn && window.DsmeSound) DsmeSound.music();
   }
 
-  function pauseMusic() { song.pause(); }
+  function pauseMusic() {
+    if (window.DsmeSound) DsmeSound.stopMusic();
+  }
 
   function femaleVoice() {
     if (!window.speechSynthesis) return null;
@@ -163,29 +150,9 @@
     femaleVoice();
   }
 
-  /** Letter voice sits inside the slow music. The song keeps playing. */
   function speak(text) {
-    if (!soundOn || !window.speechSynthesis) return;
-    const token = ++speakToken;
-    const ducked = musicOn && !song.paused;
-    if (ducked) song.volume = 0.16;
-    window.speechSynthesis.cancel();
-    window.setTimeout(function () {
-      if (token !== speakToken) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      const voice = femaleVoice();
-      if (voice) utter.voice = voice;
-      utter.lang = "en-US";
-      utter.rate = 0.9;
-      utter.pitch = 1.18;
-      function restore() {
-        if (token !== speakToken) return;
-        if (musicOn && !song.paused) song.volume = MUSIC_VOL;
-      }
-      utter.onend = restore;
-      utter.onerror = restore;
-      window.speechSynthesis.speak(utter);
-    }, 60);
+    if (!soundOn || !window.DsmeSound) return;
+    DsmeSound.say(text);
   }
 
   function badgeName(stars) {
@@ -194,7 +161,7 @@
   }
 
   function stopSpeech() {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (window.DsmeSound) DsmeSound.hush();
   }
 
   function lettersDone() {
@@ -204,7 +171,12 @@
   function openLetter() {
     clearTimeout(advanceTimer);
     if (progress.letterIndex >= LETTERS.length) {
-      finished = { stars: progress.stars, bestStreak: progress.bestStreak };
+      finished = {
+        stars: progress.stars,
+        bestStreak: progress.bestStreak,
+        right: progress.results.filter(function (r) { return r === "star"; }).length,
+        wrong: progress.results.filter(function (r) { return r === "wrong"; }).length,
+      };
       screen = "done";
       question = null;
       feedback = null;
@@ -260,23 +232,29 @@
   }
 
   function onWrong(position) {
+    if (phase !== "answering") return;
+    const index = progress.letterIndex;
+    const results = progress.results.slice();
+    results[index] = "wrong";
     progress = {
-      letterIndex: progress.letterIndex,
-      stars: progress.stars,
+      letterIndex: index,
+      stars: Math.max(0, progress.stars - 1),
       streak: 0,
       bestStreak: progress.bestStreak,
-      results: progress.results.slice(),
+      results: results,
     };
-    saveProgress();
+    const saved = Object.assign({}, progress, { letterIndex: index + 1 });
+    localStorage.setItem(STORE_KEY, JSON.stringify(saved));
+    phase = "wrong";
     tappedWrong[position] = true;
-    wrongTaps += 1;
-    wiggle = position;
-    feedback = { kind: "again" };
+    feedback = { kind: "cut" };
     playWrong();
+    speak("Wrong. Minus one mark.");
     render();
-    setTimeout(function () {
-      if (wiggle === position) { wiggle = -1; render(); }
-    }, 450);
+    advanceTimer = setTimeout(function () {
+      progress = Object.assign({}, progress, { letterIndex: index + 1 });
+      openLetter();
+    }, 800);
   }
 
   function onSkip() {
@@ -342,9 +320,6 @@
     const letter = mid ? LETTERS[progress.letterIndex] : null;
     return (
       '<section class="play-welcome">' +
-        '<img class="play-logo" src="img/dsme_logo.webp" alt="Dawn School of Modern Education logo" width="120" height="98">' +
-        '<p class="eyebrow school-name">Dawn School of Modern Education</p>' +
-        '<h1>DSME Kids ABC Adventure</h1>' +
         '<p class="lead">Find the same letter, A to Z. A slow song plays, and a voice says each letter.</p>' +
         '<div class="play-actions">' +
           (mid
@@ -381,6 +356,8 @@
       message = '<p class="msg msg-good">' + esc(feedback.text) +
         (feedback.star ? " +1 star" : "") +
         (feedback.badge ? " · " + esc(feedback.badge) : "") + '</p>';
+    } else if (feedback && feedback.kind === "cut") {
+      message = '<p class="msg msg-again">−1 mark</p>';
     } else if (feedback && feedback.kind === "again") {
       message = '<p class="msg msg-again">Try again!</p>';
     }
@@ -417,21 +394,32 @@
     );
   }
 
+  function reviewLine(rightCount, missedCount) {
+    if (!missedCount) return "Excellent. Every answer was right.";
+    if (rightCount > missedCount) return "Good work. " + rightCount + " right and " + missedCount + " wrong.";
+    if (rightCount === missedCount) return rightCount + " right and " + missedCount + " wrong. Look a little closer next time.";
+    return "Keep practising. " + rightCount + " right and " + missedCount + " wrong.";
+  }
+
   function renderDone() {
     const stars = finished ? finished.stars : 0;
+    const right = finished ? finished.right : 0;
+    const missed = finished ? finished.wrong : 0;
     const badge = badgeName(stars);
-    const full = stars === 26;
+    const review = reviewLine(right, missed);
+    const full = missed === 0 && right === 26;
     return (
-      '<section class="play-welcome">' +
+      '<section class="play-welcome finish">' +
+        '<p class="congrats">' + (right > missed ? "Congratulations!" : "Game finished") + '</p>' +
         (badge
           ? '<div class="badge-award' + (full ? " badge-full" : "") + '">' +
               '<span class="badge-count">★ ' + stars + '</span>' +
               '<strong>' + esc(badge) + '</strong>' +
-              '<p>' + (full ? "Every letter was correct." : stars + " of 26 stars") + '</p>' +
+              '<p>' + right + ' right · ' + missed + ' wrong</p>' +
             '</div>'
-          : '<p class="trophy" aria-hidden="true">★</p><p class="lead">No badge yet. Each right answer earns one star.</p>') +
+          : '<p class="lead">No badge yet. Each right answer earns one star, and a wrong answer cuts one.</p>') +
         '<h1>' + (full ? "You are an ABC Superstar!" : "A to Z complete") + '</h1>' +
-        '<p class="lead">Best streak ' + (finished ? finished.bestStreak : 0) + '</p>' +
+        '<p class="lead">' + esc(review) + '</p>' +
         '<div class="play-actions">' +
           '<button type="button" class="btn btn-primary" data-act="new">Play again</button>' +
           '<button type="button" class="btn btn-ghost" data-act="home">Home</button>' +

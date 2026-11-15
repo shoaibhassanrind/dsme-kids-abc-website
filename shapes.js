@@ -12,57 +12,31 @@
   ];
   var board = document.getElementById("board");
   var starsEl = document.getElementById("stars");
-  var song = new Audio("audio/abc_song_full.wav");
-  song.loop = true;
-  song.volume = 0.55;
-  song.playbackRate = 0.7;
-  song.preservesPitch = true;
   var currentName = "";
-  var voiceReady = false;
-  function femaleVoice() {
-    if (!window.speechSynthesis) return null;
-    var voices = window.speechSynthesis.getVoices();
-    var english = voices.filter(function (v) { return /^en/i.test(v.lang); });
-    var pool = english.length ? english : voices;
-    var prefer = /zira|samantha|victoria|karen|moira|fiona|hazel|susan|aria|jenny|libby|sonia|natasha|female/i;
-    var male = /male|david|mark|guy|daniel|ravi|george/i;
-    return pool.filter(function (v) { return prefer.test(v.name) && !male.test(v.name); })[0]
-      || pool.filter(function (v) { return !male.test(v.name); })[0]
-      || null;
-  }
-  if (window.speechSynthesis) window.speechSynthesis.addEventListener("voiceschanged", femaleVoice);
-  function speak(text) {
-    if (!text || !window.speechSynthesis) return;
-    if (!song.paused) song.volume = 0.16;
-    window.speechSynthesis.cancel();
-    var utter = new SpeechSynthesisUtterance(text);
-    var voice = femaleVoice();
-    if (voice) utter.voice = voice;
-    utter.lang = "en-US";
-    utter.rate = 0.9;
-    utter.pitch = 1.15;
-    function restore() { if (!song.paused) song.volume = 0.55; }
-    utter.onend = restore;
-    utter.onerror = restore;
-    window.speechSynthesis.speak(utter);
-  }
-  function startMusic() {
-    song.volume = 0.55;
-    song.playbackRate = 0.7;
-    song.play().catch(function () {});
-  }
-  document.addEventListener("pointerdown", function () {
-    startMusic();
-    if (!voiceReady) {
-      voiceReady = true;
-      speak(currentName);
-    }
-  });
   var round = 0;
   var stars = 0;
-  var wrong = 0;
+  var streak = 0;
+  var right = 0;
+  var missed = 0;
   var locked = false;
   var correctAt = 0;
+
+  function paintStatus(total) {
+    starsEl.textContent = "★ " + stars;
+    var badge = document.getElementById("badge");
+    if (badge) {
+      badge.hidden = stars < 1;
+      badge.textContent = stars + " Star Badge";
+    }
+    var streakEl = document.getElementById("streak");
+    if (streakEl) streakEl.textContent = "Streak " + streak;
+    var track = document.getElementById("track");
+    if (track) track.style.width = Math.round((round / total) * 100) + "%";
+    var musicBtn = document.getElementById("music-btn");
+    var voiceBtn = document.getElementById("voice-btn");
+    if (musicBtn && window.DsmeSound) musicBtn.textContent = DsmeSound.musicOn() ? "Music on" : "Music off";
+    if (voiceBtn && window.DsmeSound) voiceBtn.textContent = DsmeSound.voiceOn() ? "Phonics on" : "Phonics off";
+  }
 
   function icon(shape) {
     return '<figure class="named"><img class="target-pic" src="img/shapes/' + shape[1] + '" alt="' + shape[0] + '"><figcaption>' + shape[0] + '</figcaption></figure>';
@@ -77,9 +51,22 @@
     return a;
   }
 
+  function reviewLine(rightCount, missedCount) {
+    if (!missedCount) return "Excellent. Every answer was right.";
+    if (rightCount > missedCount) return "Good work. " + rightCount + " right and " + missedCount + " wrong.";
+    if (rightCount === missedCount) return rightCount + " right and " + missedCount + " wrong. Look a little closer next time.";
+    return "Keep practising. " + rightCount + " right and " + missedCount + " wrong.";
+  }
+
   function showDone() {
-    board.innerHTML = '<h1>You found the shapes!</h1><p class="lead">' + stars + ' of ' + shapes.length + ' stars</p>' +
-      '<p><a class="btn btn-shape" href="shapes.html">Play again</a></p>';
+    var badge = stars + " Star Badge";
+    var review = reviewLine(right, missed);
+    if (window.DsmeSound) DsmeSound.say(review + " " + badge + ".");
+    board.innerHTML = '<div class="finish"><p class="congrats">' + (right > missed ? "Congratulations!" : "Game finished") + '</p>' +
+      '<div class="badge-award"><span class="badge-count">★ ' + stars + '</span><strong>' + badge + '</strong>' +
+      '<p>' + right + ' right · ' + missed + ' wrong</p></div>' +
+      '<h1>You found the shapes!</h1><p class="lead">' + review + '</p>' +
+      '<p><a class="btn btn-shape" href="shapes.html">Play again</a></p></div>';
   }
 
   function render() {
@@ -89,9 +76,8 @@
     var others = shuffle(shapes.filter(function (it) { return it !== target; })).slice(0, 2);
     var choices = shuffle([target].concat(others));
     correctAt = choices.indexOf(target);
-    wrong = 0;
     locked = false;
-    starsEl.textContent = "★ " + stars;
+    paintStatus(shapes.length);
     board.innerHTML =
       '<p class="fine">Shape ' + (round + 1) + ' of ' + shapes.length + '</p>' +
       icon(target) +
@@ -99,7 +85,7 @@
       '<div class="choice-row">' + choices.map(function (it, i) {
         return '<button type="button" data-i="' + i + '" aria-label="' + it[0] + '">' + icon(it) + '</button>';
       }).join("") + '</div><p id="msg"></p>';
-    if (voiceReady) speak(currentName);
+    if (window.DsmeSound) DsmeSound.say(currentName);
   }
 
   board.addEventListener("click", function (event) {
@@ -109,20 +95,35 @@
     var msg = document.getElementById("msg");
     if (i === correctAt) {
       locked = true;
+      right += 1;
       stars += 1;
-      starsEl.textContent = "★ " + stars;
+      streak += 1;
+      paintStatus(shapes.length);
       button.classList.add("ok");
       msg.className = "play-msg good";
       msg.textContent = "Great job! +1 star";
       setTimeout(function () { round += 1; render(); }, 900);
     } else {
-      wrong += 1;
+      locked = true;
+      missed += 1;
+      stars = Math.max(0, stars - 1);
+      streak = 0;
+      paintStatus(shapes.length);
       button.classList.add("bad");
       msg.className = "play-msg again";
-      msg.textContent = "Try again!";
-      if (wrong >= 2) board.querySelector('button[data-i="' + correctAt + '"]').classList.add("hint");
+      msg.textContent = "−1 mark";
+      if (window.DsmeSound) DsmeSound.say("Wrong. Minus one mark.");
+      setTimeout(function () { round += 1; render(); }, 800);
     }
   });
 
+  document.getElementById("music-btn").addEventListener("click", function () {
+    if (window.DsmeSound) DsmeSound.toggleMusic();
+    paintStatus(shapes.length);
+  });
+  document.getElementById("voice-btn").addEventListener("click", function () {
+    if (window.DsmeSound) DsmeSound.toggleVoice();
+    paintStatus(shapes.length);
+  });
   render();
 })();
