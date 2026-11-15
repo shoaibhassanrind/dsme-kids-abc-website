@@ -1,14 +1,14 @@
 (function () {
   "use strict";
   var shapes = [
-    ["Circle", "#3DA5F5", '<circle cx="60" cy="60" r="36"/>'],
-    ["Square", "#F07D1A", '<rect x="24" y="24" width="72" height="72" rx="8"/>'],
-    ["Triangle", "#2FB67C", '<polygon points="60,18 104,102 16,102"/>'],
-    ["Star", "#E2A400", '<polygon points="60,14 72,46 106,46 78,66 90,100 60,78 30,100 42,66 14,46 48,46"/>'],
-    ["Heart", "#E24B6A", '<path d="M60 98 C20 66 18 36 40 32 C50 30 58 40 60 48 C62 40 70 30 80 32 C102 36 100 66 60 98Z"/>'],
-    ["Diamond", "#8B6CF0", '<polygon points="60,16 104,60 60,104 16,60"/>'],
-    ["Oval", "#1F7AE0", '<ellipse cx="60" cy="60" rx="40" ry="26"/>'],
-    ["Rectangle", "#C9843A", '<rect x="16" y="34" width="88" height="52" rx="8"/>']
+    ["Circle", "circle.jpg"],
+    ["Square", "square.jpg"],
+    ["Triangle", "triangle.jpg"],
+    ["Star", "star.jpg"],
+    ["Heart", "heart.jpg"],
+    ["Diamond", "diamond.jpg"],
+    ["Oval", "oval.jpg"],
+    ["Rectangle", "rectangle.jpg"]
   ];
   var board = document.getElementById("board");
   var starsEl = document.getElementById("stars");
@@ -30,7 +30,7 @@
   var correctAt = 0;
 
   function icon(shape) {
-    return '<figure class="named"><svg class="shape-svg" viewBox="0 0 120 120" aria-label="' + shape[0] + '"><g fill="' + shape[1] + '">' + shape[2] + '</g></svg><figcaption>' + shape[0] + '</figcaption></figure>';
+    return '<figure class="named"><img class="target-pic" src="img/shapes/' + shape[1] + '" alt="' + shape[0] + '"><figcaption>' + shape[0] + '</figcaption></figure>';
   }
 
   function shuffle(list) {

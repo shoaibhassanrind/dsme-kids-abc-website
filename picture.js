@@ -1,13 +1,13 @@
 (function () {
   "use strict";
   var items = [
-    ["Apple", "apple.svg"], ["Ball", "ball.svg"], ["Cat", "cat.svg"], ["Dolphin", "dolphin.svg"],
-    ["Elephant", "elephant.svg"], ["Fish", "fish.svg"], ["Grapes", "grapes.svg"], ["House", "house.svg"],
-    ["Ice cream", "ice-cream.svg"], ["Juice", "juice.svg"], ["Kite", "kite.svg"], ["Lion", "lion.svg"],
-    ["Moon", "moon.svg"], ["Nest", "nest.svg"], ["Orange", "orange.svg"], ["Penguin", "penguin.svg"],
-    ["Queen", "queen.svg"], ["Rainbow", "rainbow.svg"], ["Sun", "sun.svg"], ["Tiger", "tiger.svg"],
-    ["Umbrella", "umbrella.svg"], ["Violin", "violin.svg"], ["Whale", "whale.svg"],
-    ["Xylophone", "xylophone.svg"], ["Yo-yo", "yo-yo.svg"], ["Zebra", "zebra.svg"]
+    ["Apple", "apple-3d.jpg"], ["Ball", "ball-3d.jpg"], ["Cat", "cat-3d.jpg"], ["Dolphin", "dolphin-3d.jpg"],
+    ["Elephant", "elephant-3d.jpg"], ["Fish", "fish-3d.jpg"], ["Grapes", "grapes-3d.jpg"], ["House", "house-3d.jpg"],
+    ["Ice cream", "ice-cream-3d.jpg"], ["Juice", "juice-3d.jpg"], ["Kite", "kite-3d.jpg"], ["Lion", "lion-3d.jpg"],
+    ["Moon", "moon-3d.jpg"], ["Nest", "nest-3d.jpg"], ["Orange", "orange-3d.jpg"], ["Penguin", "penguin-3d.jpg"],
+    ["Queen", "queen-3d.jpg"], ["Rainbow", "rainbow-3d.jpg"], ["Sun", "sun-3d.jpg"], ["Tiger", "tiger-3d.jpg"],
+    ["Umbrella", "umbrella-3d.jpg"], ["Violin", "violin-3d.jpg"], ["Whale", "whale-3d.jpg"],
+    ["Xylophone", "xylophone-3d.jpg"], ["Yo-yo", "yo-yo-3d.jpg"], ["Zebra", "zebra-3d.jpg"]
   ];
   var board = document.getElementById("board");
   var starsEl = document.getElementById("stars");
