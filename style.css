@@ -272,4 +272,66 @@ p { margin: 0 0 1em; }
 }
 @media (prefers-reduced-motion: reduce) {
   .choice.wiggle { animation: none; }
+  .faces li { transform: none; }
 }
+
+/* Student face banner, above the game */
+.student-banner {
+  position: relative;
+  margin: 0;
+  padding: 18px 16px 36px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.28), transparent 26%),
+    radial-gradient(circle at 92% 10%, rgba(255,201,60,.45), transparent 30%),
+    linear-gradient(105deg, #163E72 0%, #1F7AE0 46%, #F07D1A 100%);
+}
+.student-banner::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 26px;
+  background: var(--bg);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.student-banner-copy { text-align: center; position: relative; z-index: 1; }
+.student-kicker {
+  margin: 0;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .9;
+}
+.student-title {
+  margin: 2px 0 10px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+}
+.faces {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 820px;
+}
+.faces li {
+  width: clamp(64px, 13vw, 108px);
+  margin: 0 -6px;
+  padding: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(16, 24, 48, .22);
+  transform: translateY(var(--lift, 0));
+}
+.faces li:nth-child(odd) { --lift: 10px; }
+.faces li:nth-child(3), .faces li:nth-child(4) { --lift: -4px; z-index: 1; }
+.faces svg { display: block; width: 100%; height: auto; border-radius: 50%; }
+.learn-card img, .choice img { background: #fff; border-radius: 16px; }

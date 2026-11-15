@@ -3,32 +3,32 @@
   "use strict";
 
   const LETTERS = [
-    ["A", "Apple", "letter_a_apple.webp"],
-    ["B", "Ball", "letter_b_ball.webp"],
-    ["C", "Cat", "letter_c_cat.webp"],
-    ["D", "Dolphin", "letter_d_dolphin.webp"],
-    ["E", "Elephant", "letter_e_elephant.webp"],
-    ["F", "Fish", "letter_f_fish.webp"],
-    ["G", "Grapes", "letter_g_grapes.webp"],
-    ["H", "House", "letter_h_house.webp"],
-    ["I", "Ice cream", "letter_i_ice_cream.webp"],
-    ["J", "Juice", "letter_j_juice.webp"],
-    ["K", "Kite", "letter_k_kite.webp"],
-    ["L", "Lion", "letter_l_lion.webp"],
-    ["M", "Moon", "letter_m_moon.webp"],
-    ["N", "Nest", "letter_n_nest.webp"],
-    ["O", "Orange", "letter_o_orange.webp"],
-    ["P", "Penguin", "letter_p_penguin.webp"],
-    ["Q", "Queen", "letter_q_queen.webp"],
-    ["R", "Rainbow", "letter_r_rainbow.webp"],
-    ["S", "Sun", "letter_s_sun.webp"],
-    ["T", "Tiger", "letter_t_tiger.webp"],
-    ["U", "Umbrella", "letter_u_umbrella.webp"],
-    ["V", "Violin", "letter_v_violin.webp"],
-    ["W", "Whale", "letter_w_whale.webp"],
-    ["X", "Xylophone", "letter_x_xylophone.webp"],
-    ["Y", "Yo-yo", "letter_y_yo_yo.webp"],
-    ["Z", "Zebra", "letter_z_zebra.webp"],
+    ["A", "Apple", "apple.svg"],
+    ["B", "Ball", "ball.svg"],
+    ["C", "Cat", "cat.svg"],
+    ["D", "Dolphin", "dolphin.svg"],
+    ["E", "Elephant", "elephant.svg"],
+    ["F", "Fish", "fish.svg"],
+    ["G", "Grapes", "grapes.svg"],
+    ["H", "House", "house.svg"],
+    ["I", "Ice cream", "ice-cream.svg"],
+    ["J", "Juice", "juice.svg"],
+    ["K", "Kite", "kite.svg"],
+    ["L", "Lion", "lion.svg"],
+    ["M", "Moon", "moon.svg"],
+    ["N", "Nest", "nest.svg"],
+    ["O", "Orange", "orange.svg"],
+    ["P", "Penguin", "penguin.svg"],
+    ["Q", "Queen", "queen.svg"],
+    ["R", "Rainbow", "rainbow.svg"],
+    ["S", "Sun", "sun.svg"],
+    ["T", "Tiger", "tiger.svg"],
+    ["U", "Umbrella", "umbrella.svg"],
+    ["V", "Violin", "violin.svg"],
+    ["W", "Whale", "whale.svg"],
+    ["X", "Xylophone", "xylophone.svg"],
+    ["Y", "Yo-yo", "yo-yo.svg"],
+    ["Z", "Zebra", "zebra.svg"],
   ].map(function (row) {
     return { upper: row[0], lower: row[0].toLowerCase(), word: row[1], file: row[2] };
   });
@@ -100,7 +100,7 @@
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
 
   function img(letter) {
-    return "img/letters/" + letter.file;
+    return "img/words/" + letter.file;
   }
 
   function buildQuestion(correctIndex) {
