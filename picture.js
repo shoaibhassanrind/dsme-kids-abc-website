@@ -11,6 +11,17 @@
   ];
   var board = document.getElementById("board");
   var starsEl = document.getElementById("stars");
+  var song = new Audio("audio/abc_song_full.wav");
+  song.loop = true;
+  song.volume = 0.38;
+  song.playbackRate = 0.7;
+  song.preservesPitch = true;
+  function startMusic() {
+    song.playbackRate = 0.7;
+    song.play().catch(function () {});
+  }
+  document.addEventListener("pointerdown", startMusic);
+  startMusic();
   var round = 0;
   var stars = 0;
   var wrong = 0;
@@ -27,7 +38,7 @@
   }
 
   function pic(file, label) {
-    return '<img class="target-pic" src="img/words/' + file + '" alt="' + label + '">';
+    return '<figure class="named"><img class="target-pic" src="img/words/' + file + '" alt="' + label + '"><figcaption>' + label + '</figcaption></figure>';
   }
 
   function showDone() {

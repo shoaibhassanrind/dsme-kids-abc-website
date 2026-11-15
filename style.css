@@ -143,6 +143,10 @@ p { margin: 0 0 1em; }
 .play-board h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
 .target-pic, .choice-pic { width: min(160px, 34vw); height: auto; border-radius: 20px; background: #fff; }
 .shape-svg { width: min(140px, 30vw); height: auto; }
+.named { margin: 0; }
+.named figcaption { margin-top: 4px; font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: var(--ink); }
+.choice-row .target-pic, .choice-row .shape-svg { width: min(100px, 22vw); }
+.choice-row figcaption { font-size: .95rem; }
 .choice-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 8px; }
 .choice-row button { min-height: 120px; padding: 8px; border-radius: 20px; border: 3px solid var(--border); background: var(--surface); cursor: pointer; }
 .choice-row button.ok { border-color: var(--green); background: var(--green-bg); }

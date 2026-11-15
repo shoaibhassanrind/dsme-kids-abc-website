@@ -12,6 +12,17 @@
   ];
   var board = document.getElementById("board");
   var starsEl = document.getElementById("stars");
+  var song = new Audio("audio/abc_song_full.wav");
+  song.loop = true;
+  song.volume = 0.38;
+  song.playbackRate = 0.7;
+  song.preservesPitch = true;
+  function startMusic() {
+    song.playbackRate = 0.7;
+    song.play().catch(function () {});
+  }
+  document.addEventListener("pointerdown", startMusic);
+  startMusic();
   var round = 0;
   var stars = 0;
   var wrong = 0;
@@ -19,7 +30,7 @@
   var correctAt = 0;
 
   function icon(shape) {
-    return '<svg class="shape-svg" viewBox="0 0 120 120" aria-label="' + shape[0] + '"><g fill="' + shape[1] + '">' + shape[2] + '</g></svg>';
+    return '<figure class="named"><svg class="shape-svg" viewBox="0 0 120 120" aria-label="' + shape[0] + '"><g fill="' + shape[1] + '">' + shape[2] + '</g></svg><figcaption>' + shape[0] + '</figcaption></figure>';
   }
 
   function shuffle(list) {
