@@ -205,12 +205,40 @@ p { margin: 0 0 1em; }
 .phonic { margin: 4px 0 8px; color: var(--ink-soft); }
 .prompt { font-family: var(--display); font-weight: 800; font-size: 1.35rem; }
 .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.letter-choice { min-height: 110px; border-radius: 22px; border: 3px solid var(--border); background: var(--surface); cursor: pointer; font-family: var(--display); }
-.letter-choice b { display: block; font-size: 2.4rem; }
-.letter-choice em { font-style: normal; color: var(--primary); font-size: 1.3rem; }
-.letter-choice.correct { border-color: var(--green); background: var(--green-bg); }
-.letter-choice.wrong { border-color: #E07A5F; background: #FDECEA; }
-.letter-choice.hint { border-color: var(--sunny); box-shadow: 0 0 0 4px rgba(255,201,60,.45); }
+body.play-page {
+  min-height: 100vh;
+  background-color: #ffe8c2;
+  background-image:
+    radial-gradient(circle at 8% 10%, rgba(61,165,245,.5) 0, rgba(61,165,245,0) 32%),
+    radial-gradient(circle at 94% 6%, rgba(255,201,60,.62) 0, rgba(255,201,60,0) 30%),
+    radial-gradient(circle at 98% 82%, rgba(47,182,124,.4) 0, rgba(47,182,124,0) 32%),
+    radial-gradient(circle at 4% 90%, rgba(139,108,240,.38) 0, rgba(139,108,240,0) 30%),
+    linear-gradient(180deg, #fff6ea 0%, #ffe0b0 100%);
+}
+.choice-row button:nth-child(3n+1):not(.ok):not(.bad) { background: linear-gradient(180deg, #e7f4ff, #fff); }
+.choice-row button:nth-child(3n+2):not(.ok):not(.bad) { background: linear-gradient(180deg, #fff4cc, #fff); }
+.choice-row button:nth-child(3n+3):not(.ok):not(.bad) { background: linear-gradient(180deg, #e4f8ee, #fff); }
+.letter-choice {
+  position: relative; overflow: hidden; min-height: 148px; border-radius: 22px;
+  border: 3px solid transparent; cursor: pointer; font-family: var(--display); color: #fff;
+  box-shadow: 0 12px 22px rgba(43,45,66,.14);
+}
+.letter-choice::before {
+  content: ""; position: absolute; width: 130px; height: 130px; border-radius: 50%;
+  right: -36px; top: -46px; background: rgba(255,255,255,.28);
+}
+.letter-choice b, .letter-choice em { position: relative; }
+.letter-choice b { display: block; font-size: 3.4rem; line-height: .9; }
+.letter-choice em { font-style: normal; color: rgba(255,255,255,.92); font-size: 1.55rem; }
+.letter-choice:nth-child(3n+1) { background: linear-gradient(165deg, #6ec4ff, #1c6fd4); }
+.letter-choice:nth-child(3n+2) { background: linear-gradient(165deg, #ffe07a, #f0a202); color: #4a3200; }
+.letter-choice:nth-child(3n+2) em { color: #6b4e00; }
+.letter-choice:nth-child(3n+3) { background: linear-gradient(165deg, #7ddeb0, #17945c); }
+.letter-choice.correct { background: linear-gradient(165deg, #b7f0d2, #2fb67c); color: #08321c; border-color: #146b42; }
+.letter-choice.correct em { color: #146b42; }
+.letter-choice.wrong { background: linear-gradient(165deg, #ffd0c8, #e07a5f); color: #5c1c12; border-color: #c45a42; }
+.letter-choice.wrong em { color: #8a3324; }
+.letter-choice.hint { box-shadow: 0 0 0 5px rgba(255,201,60,.85); }
 .msg { font-family: var(--display); font-weight: 800; }
 .msg-good { color: #1B7A52; }
 .msg-again { color: #9C3B28; }
