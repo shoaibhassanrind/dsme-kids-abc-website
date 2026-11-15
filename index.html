@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DSME Kids ABC Adventure</title>
-<meta name="description" content="Play the DSME Kids ABC Adventure game in the browser. Find the matching picture for every letter A to Z, earn stars, and download the Android app.">
+<meta name="description" content="A free, offline Android app from Dawn School of Modern Education that teaches children aged 3 to 6 the English alphabet with pictures, pronunciation, stars and a sung A to Z song.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700&display=swap">
@@ -13,106 +13,145 @@
 <body>
 <header class="top">
   <div class="wrap top-inner">
-    <a class="brand" href="#game" aria-label="DSME Kids ABC Adventure home">
+    <a class="brand" href="#top" aria-label="DSME Kids ABC Adventure home">
       <img class="brand-logo" src="img/dsme_logo.webp" alt="" width="52" height="42">
       <span class="brand-name">DSME Kids ABC Adventure</span>
     </a>
-    <nav class="nav" aria-label="Page">
+    <nav class="nav" aria-label="Page sections">
+      <a href="#features">Features</a>
+      <a href="#song">Song</a>
+      <a href="#parents">For parents</a>
       <a href="privacy.html">Privacy</a>
     </nav>
   </div>
 </header>
 
-<section class="student-banner" aria-label="Students of Dawn School of Modern Education, Johi">
-  <div class="student-banner-copy">
-    <p class="student-kicker">Dawn School of Modern Education</p>
-    <p class="student-title">Our students, Johi</p>
-  </div>
-  <ul class="faces">
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student in a blue hijab">
-        <circle cx="40" cy="40" r="40" fill="#1F4E89"/>
-        <path d="M8 46c6-22 18-32 32-32s26 10 32 32v34H8V46z" fill="#163E72"/>
-        <ellipse cx="40" cy="42" rx="18" ry="20" fill="#F0C29A"/>
-        <path d="M22 36c4-14 12-20 18-20s14 6 18 20" fill="none" stroke="#1F4E89" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="33" cy="42" r="2.1" fill="#2B2D42"/><circle cx="47" cy="42" r="2.1" fill="#2B2D42"/>
-        <path d="M34 51q6 6 12 0" fill="none" stroke="#C46B58" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="28" cy="48" r="2.2" fill="#F3A7A0" opacity=".8"/><circle cx="52" cy="48" r="2.2" fill="#F3A7A0" opacity=".8"/>
-      </svg>
-    </li>
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student with short hair">
-        <circle cx="40" cy="40" r="40" fill="#F4C89C"/>
-        <path d="M18 38c2-18 12-26 22-26 14 0 22 10 24 26-6-6-14-8-24-8s-16 3-22 8z" fill="#3A2A22"/>
-        <ellipse cx="40" cy="46" rx="16" ry="17" fill="#F6D0A8"/>
-        <circle cx="34" cy="45" r="2" fill="#2B2D42"/><circle cx="46" cy="45" r="2" fill="#2B2D42"/>
-        <path d="M35 54q5 5 10 0" fill="none" stroke="#C46B58" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M24 68h32v12H24z" fill="#1F7AE0"/>
-        <path d="M36 68l4 8 4-8" fill="#fff"/>
-      </svg>
-    </li>
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student with a ponytail">
-        <circle cx="40" cy="40" r="40" fill="#E7B48A"/>
-        <path d="M16 50c4-24 14-36 28-36 8 0 16 6 20 16 6 2 12 10 12 16 0 8-6 12-10 10-2 14-10 20-22 20-14 0-24-8-28-26z" fill="#2A211C"/>
-        <ellipse cx="40" cy="46" rx="16" ry="18" fill="#F3C7A0"/>
-        <circle cx="58" cy="28" r="7" fill="#E24B4B"/>
-        <circle cx="34" cy="45" r="2" fill="#2B2D42"/><circle cx="46" cy="45" r="2" fill="#2B2D42"/>
-        <path d="M35 55q5 5 10 0" fill="none" stroke="#C46B58" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M26 70h28v10H26z" fill="#F07D1A"/>
-      </svg>
-    </li>
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student in a school cap">
-        <circle cx="40" cy="40" r="40" fill="#C9855A"/>
-        <path d="M14 40c4-8 14-16 26-16s22 8 26 16H14z" fill="#1B3A6B"/>
-        <rect x="18" y="36" width="44" height="6" rx="2" fill="#244E8A"/>
-        <ellipse cx="40" cy="50" rx="15" ry="16" fill="#D9A074"/>
-        <circle cx="34" cy="49" r="2" fill="#2B2D42"/><circle cx="46" cy="49" r="2" fill="#2B2D42"/>
-        <path d="M35 58q5 4 10 0" fill="none" stroke="#A85A48" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M24 70h32v10H24z" fill="#163E72"/>
-      </svg>
-    </li>
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student in a cream dupatta">
-        <circle cx="40" cy="40" r="40" fill="#F2D3A2"/>
-        <path d="M12 44c8-26 18-34 28-34s20 8 28 34c-8 6-18 8-28 8s-20-2-28-8z" fill="#F7E7C6"/>
-        <path d="M14 48c10 10 18 12 26 12s16-2 26-12" fill="none" stroke="#E7C98A" stroke-width="4"/>
-        <ellipse cx="40" cy="46" rx="15" ry="17" fill="#F6D0A8"/>
-        <circle cx="34" cy="45" r="2" fill="#2B2D42"/><circle cx="46" cy="45" r="2" fill="#2B2D42"/>
-        <path d="M35 54q5 5 10 0" fill="none" stroke="#C46B58" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M22 68h36l-4 12H26z" fill="#2FB67C"/>
-      </svg>
-    </li>
-    <li>
-      <svg viewBox="0 0 80 80" role="img" aria-label="Student with curly hair">
-        <circle cx="40" cy="40" r="40" fill="#8D5A3C"/>
-        <circle cx="24" cy="34" r="10" fill="#3B2418"/><circle cx="40" cy="26" r="11" fill="#3B2418"/><circle cx="56" cy="34" r="10" fill="#3B2418"/>
-        <ellipse cx="40" cy="48" rx="16" ry="17" fill="#A56B48"/>
-        <circle cx="34" cy="47" r="2" fill="#2B2D42"/><circle cx="46" cy="47" r="2" fill="#2B2D42"/>
-        <path d="M34 56q6 6 12 0" fill="none" stroke="#7A4636" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M24 70h32v10H24z" fill="#FFC93C"/>
-        <circle cx="40" cy="74" r="2" fill="#6B4E00"/>
-      </svg>
-    </li>
-  </ul>
-</section>
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <div class="school-row">
+          <img class="hero-logo" src="img/dsme_logo.webp" alt="Dawn School of Modern Education logo" width="130" height="106">
+          <p class="eyebrow">Dawn School of Modern Education</p>
+        </div>
+        <h1>Learn A to Z with pictures, sounds and stars.</h1>
+        <p class="lead">A free Android app for children aged 3 to 6. Each letter comes with a word, a picture and a clear voice. The child finds the matching picture, earns a star and moves on. Fully offline, no ads, no sign-up.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="downloads/dsme-kids-abc-adventure.apk" download>Download for Android (APK)</a>
+          <a class="btn btn-ghost" href="#install">How to install</a>
+        </div>
+        <p class="fine">Android 7.0 or newer · About 25 MB · Version 1.0.0</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-bar"><span>★ 3</span><span>Letter 4 of 26</span></div>
+          <div class="phone-letter"><b>D</b><em>d</em></div>
+          <div class="phone-word">Dawn</div>
+          <div class="phone-prompt">Find the same picture!</div>
+          <div class="phone-choices">
+            <span class="pc p1">K</span>
+            <span class="pc p2 ok">D</span>
+            <span class="pc p3">M</span>
+          </div>
+          <div class="phone-msg">Great job! +1 star</div>
+        </div>
+        <span class="float-star s1">★</span>
+        <span class="float-star s2">★</span>
+        <span class="float-star s3">★</span>
+      </div>
+    </div>
+  </section>
 
-<aside class="side-dock" aria-label="Download the Android app">
-  <p class="dock-title">Get the app</p>
-  <a class="btn btn-primary dock-btn" href="downloads/dsme-kids-abc-adventure.apk" download>Download APK</a>
-  <p class="fine dock-note">Android 7.0 or newer. Open the file, allow install, tap Install.</p>
-</aside>
+  <section id="features" class="band">
+    <div class="wrap">
+      <h2>What the child does</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card-ico ico-blue" aria-hidden="true">Aa</div>
+          <h3>Recognize and Select</h3>
+          <p>Look at the letter, the word and the picture, then tap the same picture among three. Wrong taps get a gentle "Try again", and after two tries the right card glows as a hint.</p>
+        </article>
+        <article class="card">
+          <div class="card-ico ico-sun" aria-hidden="true">★</div>
+          <h3>Stars and streaks</h3>
+          <p>One star for every letter answered correctly, up to 26. A streak counter rewards getting several in a row. No timers and no penalties.</p>
+        </article>
+        <article class="card">
+          <div class="card-ico ico-green" aria-hidden="true">♪</div>
+          <h3>Hear it</h3>
+          <p>Every letter and word is spoken slowly and clearly in English. The child can press "Hear it" as many times as they like.</p>
+        </article>
+        <article class="card">
+          <div class="card-ico ico-purple" aria-hidden="true">26</div>
+          <h3>Picks up where they left off</h3>
+          <p>Close the app at letter F and it opens again at letter F. A big "Continue" button means a 3-year-old can do it alone.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<main id="game" class="game-root"></main>
+  <section id="song" class="band band-song">
+    <div class="wrap song-inner">
+      <div>
+        <h2>The A to Z song</h2>
+        <p>A cheerful sing-along with a line for every letter and a chorus the whole class can join. Lyrics highlight as they are sung, and the big letter on screen changes with each line.</p>
+        <ul class="plain">
+          <li>Turn the voice or the music off on their own to practise singing</li>
+          <li>Pause, resume and restart with big buttons</li>
+          <li>Works with no internet</li>
+        </ul>
+      </div>
+      <blockquote class="lyric">
+        <p><span>A</span> is for Apple, shiny and red,</p>
+        <p><span>B</span> is for Ball, bounce it ahead.</p>
+        <p><span>C</span> is for Cat, with whiskers so neat,</p>
+        <p><span>D</span> is for Dolphin, dancing to the beat.</p>
+        <p class="chorus">A, B, C, sing along with me, letters are fun, as fun can be!</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <section id="parents" class="band">
+    <div class="wrap">
+      <h2>For parents and teachers</h2>
+      <div class="grid grid-3">
+        <div class="fact">
+          <h3>Nothing is collected</h3>
+          <p>The app asks for no permissions and has no internet access. No account, no analytics, no ads. Read the <a href="privacy.html">privacy policy</a>.</p>
+        </div>
+        <div class="fact">
+          <h3>Grown-up settings behind a gate</h3>
+          <p>Sound options and progress reset sit behind a press-and-hold gate. The child sees only one sound button.</p>
+        </div>
+        <div class="fact">
+          <h3>Made for small hands</h3>
+          <p>Large buttons, no reading required, no flashing, no harsh sounds. Works fully with the sound off, on phones and tablets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="band band-install">
+    <div class="wrap">
+      <h2>How to install the APK</h2>
+      <ol class="steps">
+        <li><strong>Download</strong> the APK on the Android phone or tablet using the button above.</li>
+        <li><strong>Open</strong> the downloaded file from the notification or the Downloads app.</li>
+        <li>If asked, <strong>allow installs from this source</strong> (Chrome or Files). Android shows this once.</li>
+        <li>Tap <strong>Install</strong>, then <strong>Open</strong>. The app works offline from the first start.</li>
+      </ol>
+      <p class="fine">Once the app is on Google Play, this page will link to the store listing instead.</p>
+    </div>
+  </section>
+</main>
 
 <footer class="foot">
   <div class="wrap foot-inner">
+    <img class="foot-logo" src="img/dsme_logo.webp" alt="" width="120" height="97">
     <p><strong>DSME Kids ABC Adventure</strong> · Dawn School of Modern Education (DSME), Johi</p>
     <p>App developed by Co-Chairman Asiya Shoaib Hassan Rind</p>
-    <p><a href="privacy.html">Privacy policy</a> · This game collects no data. Progress stays on this device only.</p>
+    <p><a href="privacy.html">Privacy policy</a></p>
   </div>
 </footer>
-<script src="game.js"></script>
 </body>
 </html>
